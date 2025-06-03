@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết bài viết - BlogNews</title>
+    <meta name="description" content="Đọc chi tiết bài viết về du lịch trên BlogTravel.">
+    <meta property="og:title" content="Chi tiết bài viết - BlogTravel">
+    <meta property="og:description" content="Đọc chi tiết bài viết về du lịch trên BlogTravel.">
+    <meta property="og:image" content="">
+    <meta property="og:url" content="">
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@tailwindcss/browser@latest"></script>
+</head>
+
+<body class="bg-gray-100 font-inter">
+    <header class="bg-white shadow-md py-4">
+        <div class="container mx-auto flex items-center justify-between px-4">
+            <div class="logo text-xl font-bold text-gray-800"><a href="/" style="text-decoration:none;color:red">🌐
+                    BlogNews</a></div>
+            <nav>
+                <input type="text"
+                    class="search px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="Tìm kiếm...">
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto py-8 grid grid-cols-1 lg:grid-cols-3 gap-8 px-4">
+        <div class="main-content lg:col-span-2 bg-white rounded-lg shadow-md p-6">
+            <article id="post-detail">
+                <h1 id="post-title" class="text-3xl font-bold text-gray-900 mb-4">Đang tải...</h1>
+                <img id="post-image" src="" alt="" class="w-full rounded-lg mb-6 object-cover"
+                    style="max-height: 400px;">
+                <div id="post-content" class="text-gray-700 leading-relaxed prose lg:prose-lg">
+                </div>
+            </article>
+            <section id="author-comment" class="mt-10 bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+                <!-- Số lượng bình luận -->
+<h3 class="text-lg font-semibold mt-8 mb-2">
+  💬 <span id="comment-count">0</span> bình luận
+</h3>
+
+<!-- Danh sách bình luận -->
+<ul id="comment-list" class="space-y-4 mb-6"></ul>
+
+<!-- Form gửi bình luận -->
+<div class="mt-6">
+  <textarea id="new-comment-content" rows="3" placeholder="Nhập bình luận của bạn..."
+    class="w-full p-3 border border-gray-300 rounded-md resize-none"></textarea>
+  <button id="submit-comment" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+    Gửi bình luận
+  </button>
+</div>
+            </section>
+        </div>
+
+        <aside class="sidebar-right lg:col-span-1 bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Bài viết khác</h3>
+            <ul id="related-posts" class="list-none p-0">
+            </ul>
+        </aside>
+    </main>
+
+    <footer class="bg-gray-100 py-8 text-gray-600 text-sm">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div>
+                <h6 class="font-semibold text-gray-800 mb-3">Chuyên mục</h6>
+                <ul class="list-none p-0">
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">Đời sống</a></li>
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">Du lịch</a></li>
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">Văn hóa</a></li>
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">Ẩm thực</a></li>
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">Góc nhìn</a></li>
+                </ul>
+            </div>
+            <div>
+                <h6 class="font-semibold text-gray-800 mb-3">Thông tin</h6>
+                <ul class="list-none p-0">
+                    <li class="mb-2"><a href="/about" class="hover:text-indigo-600">Về chúng tôi</a></li>
+                    <li class="mb-2"><a href="/contact" class="hover:text-indigo-600">Liên hệ</a></li>
+                    <li class="mb-2"><a href="/privacy" class="hover:text-indigo-600">Chính sách bảo mật</a></li>
+                    <li class="mb-2"><a href="/terms" class="hover:text-indigo-600">Điều khoản sử dụng</a></li>
+                    <li class="mb-2"><a href="/sitemap" class="hover:text-indigo-600">Sitemap</a></li>
+                </ul>
+            </div>
+            <div>
+                <h6 class="font-semibold text-gray-800 mb-3">Mạng xã hội</h6>
+                <ul class="list-none p-0">
+                    <li class="mb-2"><a href="www.facebook.com/kienvn2003" class="hover:text-indigo-600">Facebook</a>
+                    </li>
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">Twitter</a></li>
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">Instagram</a></li>
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">YouTube</a></li>
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">RSS</a></li>
+                </ul>
+            </div>
+            <div>
+                <h6 class="font-semibold text-gray-800 mb-3">Liên hệ</h6>
+                <p class="mb-2">Địa chỉ: 6 Võ Thị Sáu, Phường Bến Thủy, Thành Phố Vinh</p>
+                <p class="mb-2">Email: kienvn2k3@gmail.com</p>
+                <p class="mb-2">Hotline: 0327 062 858</p>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 mt-6 border-t border-gray-200 py-4 text-center text-gray-500 text-xs">
+            &copy; 2025 BlogNews. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        const postTitleElement = document.getElementById('post-title');
+        const postImageElement = document.getElementById('post-image');
+        const postContentElement = document.getElementById('post-content');
+        const relatedPostsList = document.getElementById('related-posts');
+
+        fetch(`/api/posts/${id}`)
+            .then(res => res.json())
+            .then(post => {
+                postTitleElement.textContent = post.title || 'Không có tiêu đề';
+                postImageElement.src = post.featuredImage || 'https://via.placeholder.com/600x300';
+                postImageElement.alt = post.title || 'Ảnh bài viết';
+                postContentElement.innerHTML = post.content || 'Nội dung đang được cập nhật.';
+                document.title = `${post.title} - BlogTravel`; // Cập nhật title trang
+                document.querySelector('meta[property="og:title"]').content = post.title;
+                document.querySelector('meta[property="og:image"]').content = post.featuredImage || 'https://via.placeholder.com/600x300';
+                document.querySelector('meta[property="og:url"]').content = window.location.href;
+                document.querySelector('meta[name="description"]').content = post.content ? post.content.substring(0, 160) + '...' : 'Đọc chi tiết bài viết về du lịch trên BlogTravel.';
+                document.querySelector('meta[property="og:description"]').content = post.content ? post.content.substring(0, 160) + '...' : 'Đọc chi tiết bài viết về du lịch trên BlogTravel.';
+            })
+            .catch(error => {
+                console.error('Lỗi khi tải chi tiết bài viết:', error);
+                postTitleElement.textContent = 'Không thể tải bài viết.';
+                postContentElement.textContent = 'Đã có lỗi xảy ra khi tải nội dung.';
+            });
+
+        fetch('/api/posts')
+            .then(res => res.json())
+            .then(posts => {
+                const relatedPosts = posts.filter(p => p._id !== id).slice(0, 5);
+                if (relatedPosts.length > 0) {
+                    relatedPosts.forEach(p => {
+                        const listItem = document.createElement('li');
+                        listItem.className = 'mb-2';
+                        const link = document.createElement('a');
+                        link.href = `/post.html?id=${p._id}`;
+                        link.textContent = p.title || 'Bài viết liên quan';
+                        link.className = 'text-indigo-600 hover:text-indigo-800 font-medium';
+                        listItem.appendChild(link);
+                        relatedPostsList.appendChild(listItem);
+                    });
+                } else {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = 'Không có bài viết liên quan.';
+                    relatedPostsList.appendChild(listItem);
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi khi tải bài viết liên quan:', error);
+                const listItem = document.createElement('li');
+                listItem.textContent = 'Lỗi khi tải bài viết liên quan.';
+                relatedPostsList.appendChild(listItem);
+            });
+        // Tải phần bình luận của tác giả
+let postId;
+
+// Lấy ID bài viết từ URL
+
+if (urlParams.has('id')) {
+    postId = urlParams.get('id');
+} else {
+    const pathSegments = window.location.pathname.split('/');
+    postId = pathSegments.filter(Boolean).pop(); // Lấy đoạn cuối không rỗng
+}
+
+if (!postId) {
+    console.error('Không thể xác định ID bài viết từ URL.');
+} else {
+    console.log('ID bài viết:', postId);
+    loadComments(); // Chỉ tải nếu có postId
+}
+
+// Hàm tải bình luận
+async function loadComments() {
+    try {
+        const res = await fetch(`/api/comments/post/${postId}`);
+        if (!res.ok) throw new Error(`Lỗi HTTP: ${res.status}`);
+
+        const comments = await res.json();
+
+        // Cập nhật số lượng
+        document.getElementById('comment-count').textContent = comments.length;
+
+        const commentList = document.getElementById('comment-list');
+        commentList.innerHTML = ''; // Xóa cũ
+
+        comments.forEach(cmt => {
+            const li = document.createElement('li');
+            li.className = 'p-4 bg-white border border-gray-200 rounded-md mb-2';
+
+            const author = cmt.userId?.username || '[Ẩn danh]';
+
+            li.innerHTML = `
+                <div class="text-sm font-semibold text-gray-800 mb-1">${author}</div>
+                <p class="text-gray-700">${cmt.content}</p>
+            `;
+            commentList.appendChild(li);
+        });
+
+    } catch (error) {
+        console.error('Lỗi khi tải bình luận:', error);
+        alert('Không thể tải bình luận. Vui lòng thử lại sau.');
+    }
+}
+
+// Kiểm tra trạng thái đăng nhập khi tải trang
+document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('token');
+    const submitButton = document.getElementById('submit-comment');
+    const commentInput = document.getElementById('new-comment-content');
+
+    if (!token) {
+        // Nếu chưa đăng nhập, ẩn nút gửi bình luận và hiển thị thông báo
+        submitButton.disabled = true;
+        commentInput.placeholder = 'Bạn cần đăng nhập để gửi bình luận.';
+        commentInput.disabled = true;
+    }
+});
+
+// Gửi bình luận
+document.getElementById('submit-comment').addEventListener('click', async () => {
+    const contentEl = document.getElementById('new-comment-content');
+    const content = contentEl.value.trim();
+    const token = localStorage.getItem('token');
+
+    if (!content) return alert('Vui lòng nhập nội dung bình luận.');
+
+    if (!token) {
+        alert('Bạn cần đăng nhập để gửi bình luận.');
+        return window.location.href = '/login.html';
+    }
+
+    try {
+        const res = await fetch('/api/comments', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ content, postId })
+        });
+
+        const result = await res.json();
+
+        if (!res.ok) {
+            return alert('Lỗi: ' + (result.error || 'Không thể gửi bình luận'));
+        }
+
+        // Xóa ô input và reload
+        contentEl.value = '';
+        alert('Bình luận đã được gửi!');
+        loadComments();
+
+    } catch (err) {
+        console.error('Lỗi gửi bình luận:', err);
+        alert('Lỗi kết nối. Vui lòng thử lại sau.');
+    }
+});
+
+    </script>
+</body>
+
+</html>

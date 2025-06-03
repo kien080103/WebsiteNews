@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Blog News</title>
+    <link rel="stylesheet" href="/style.css">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo"><a href="/" style="color:rgb(196, 72, 34);text-decoration:none;">🌐 BlogNews</a></div>
+        <div class="search-container my-6">
+  <input id="search-input" type="text" placeholder="Tìm kiếm bài viết..." style="height: 26px ; width: 840px; border-radius: 20px;" class="border p-2 rounded">
+  <button id="search-button" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" style="height: 30px ; width: 80px; border-radius: 20px;">Tìm kiếm</button>
+</div>
+        <div class="login-wrapper">
+            <a href="facebook.com/kienvn2003" class="social-icon fb"><img src="image/facebook-icon.png"
+                    alt="Facebook"></a>
+            <a href="#" class="social-icon zalo"><img src="/image/zalo-icon.png" alt="Zalo"></a>
+            <a href="#" class="social-icon cloud"><img src="/image/icould-icon.jpg" alt="Cloud"></a>
+            <a href="/login.html" class="login-button">Đăng nhập</a>
+        </div>
+
+    </header>
+
+    <header>
+        <nav>
+            <a href="#photo-section">Khám phá</a>
+            <a href="#top-stories">Tin tức</a>
+            <a href="#latest-posts">Tin mới</a>
+            <a href="#photo-section1">Đời sống</a>
+            <a href="#footer">Cá nhân hóa</a>
+        </nav>
+    </header>
+
+    <!-- Thêm bìa ở đây -->
+    <div class="hc_cover">
+        <a href="/">
+            <img src="/image/cover_full_hd.png" alt="Chủ tịch Hồ Chí Minh - Nghĩa nước tình quê" class="img-fluid"
+                width="100%">
+        </a>
+    </div>
+    <!-- Main layout -->
+    <main class="container">
+        <!-- Sidebar trái -->
+        <aside class="sidebar-left">
+            <h3>Chuyên mục</h3>
+            <ul>
+                <li><a href="#">Tin tức</a></li>
+                <li><a href="#">Giải trí</a></li>
+                <li><a href="#">Đời sống</a></li>
+                <li><a href="#">Thể thao</a></li>
+                <li><a href="#">Công nghệ</a></li>
+            </ul>
+        </aside>
+
+        <!-- Nội dung chính -->
+        <section class="main-content">
+            </div>
+            <div id="photo-section" class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="/image/nghean4.jpg" alt="Ảnh 1" /></div>
+                    <div class="swiper-slide"><img src="/image/nghean5.jpg" alt="Ảnh 2" /></div>
+                    <div class="swiper-slide"><img src="/image/nghean6.jpg" alt="Ảnh 3" /></div>
+                    <div class="swiper-slide"><img src="/image/làng-kim-liên-2.jpg" alt="Ảnh 4" /></div>
+                    <!-- Thêm ảnh khác nếu muốn -->
+                </div>
+
+                <!-- Nút điều hướng -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+
+                <!-- Chấm nhỏ dưới -->
+                <div class="swiper-pagination"></div>
+            </div>
+            <h2>Top Stories</h2>
+            <div id="top-stories" class="post-grid"></div>
+
+            <h2>Tin mới</h2>
+            <div id="latest-posts" class="post-list"></div>
+            </div>
+            <div id="photo-section1" class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="/image/nghe-an-co-gi-banner.jpg" alt="Ảnh 1" /></div>
+                    <div class="swiper-slide"><img src="/image/nghe-an-co-gi-6.jpg" alt="Ảnh 2" /></div>
+                    <div class="swiper-slide"><img src="/image/nghe-an-co-gi-7.jpg" alt="Ảnh 3" /></div>
+                    <div class="swiper-slide"><img src="/image/nghe-an-co-gi-20.jpg" alt="Ảnh 4" /></div>
+                    <!-- Thêm ảnh khác nếu muốn -->
+                </div>
+
+                <!-- Nút điều hướng -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+
+                <!-- Chấm nhỏ dưới -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+
+
+
+        <!-- Sidebar phải -->
+        <aside class="sidebar-right">
+            <h3>Câu chuyện nổi bật</h3>
+            <ol id="top-list"></ol>
+        </aside>
+    </main>
+
+    <!-- Script hiển thị bài viết -->
+    <script>
+                fetch('/api/posts')
+            .then(res => res.json())
+            .then(posts => {
+                const topContainer = document.getElementById('top-stories');
+                const latestContainer = document.getElementById('latest-posts');
+                const topList = document.getElementById('top-list');
+        
+                // Xóa nội dung cũ
+                topContainer.innerHTML = '';
+                latestContainer.innerHTML = '';
+                topList.innerHTML = '';
+        
+                if (!Array.isArray(posts)) return;
+        
+                posts.slice(0, 4).forEach(post => {
+                    topContainer.innerHTML += `
+                        <a href="/post.html?id=${post._id}" class="post-card">
+                          <img src="${post.featuredImage || 'https://via.placeholder.com/300'}">
+                          <div class="post-info">
+                            <h4>${post.title}</h4>
+                            <p>${post.excerpt ? post.excerpt : (post.content ? post.content.slice(0, 60) : '')}...</p>
+                          </div>
+                        </a>`;
+                });
+        
+                posts.slice(4, 10).forEach(post => {
+                    latestContainer.innerHTML += `
+                        <a href="/post.html?id=${post._id}" class="post-item">
+                          <img src="${post.featuredImage || 'https://via.placeholder.com/100'}">
+                          <div>
+                            <h4>${post.title}</h4>
+                            <p>${post.content ? post.content.slice(0, 80) : ''}...</p>
+                          </div>
+                        </a>`;
+                });
+        
+                posts.slice(0, 3).forEach((post, i) => {
+                    topList.innerHTML += `<li><a href="/post.html?id=${post._id}">${post.title}</a></li>`;
+                });
+            });
+
+
+    </script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        const swiper = new Swiper(".mySwiper", {
+            loop: true,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+        });
+
+        // Tìm kiếm bài viết
+        document.getElementById('search-button').addEventListener('click', async () => {
+  const query = document.getElementById('search-input').value.trim();
+
+  if (!query) {
+    alert('Vui lòng nhập từ khoá để tìm kiếm.');
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/posts/search?q=${encodeURIComponent(query)}`);
+    if (!response.ok) throw new Error('Lỗi khi tìm kiếm.');
+
+    const posts = await response.json();
+
+    const postList = document.getElementById('post-list');
+    postList.innerHTML = ''; // Xoá kết quả cũ
+
+    if (posts.length === 0) {
+      postList.innerHTML = '<p>Không tìm thấy bài viết nào phù hợp.</p>';
+      return;
+    }
+
+    posts.forEach(post => {
+      const postDiv = document.createElement('div');
+      postDiv.className = 'bg-white p-4 rounded-lg shadow';
+
+      postDiv.innerHTML = `
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">${post.title}</h3>
+        <p class="text-gray-600 text-sm mb-2">Tác giả: ${post.authorId?.fullName || post.authorId?.username || 'Ẩn danh'}</p>
+        <p class="text-gray-700 line-clamp-3">${post.content?.slice(0, 150)}...</p>
+        <a href="/post.html?id=${post._id}" class="text-green-600 hover:underline mt-2 inline-block">Xem chi tiết</a>
+      `;
+      postList.appendChild(postDiv);
+    });
+
+  } catch (err) {
+    console.error(err);
+    alert('Đã xảy ra lỗi khi tìm kiếm bài viết.');
+  }
+});
+
+document.getElementById('search-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    document.getElementById('search-button').click();
+  }
+});
+
+    </script>
+    <footer id="footer" class="bg-gray-100 py-8 text-gray-600 text-sm">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div>
+                <h6 class="font-semibold text-gray-800 mb-3">Chuyên mục</h6>
+                <ul class="list-none p-0">
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">Đời sống</a></li>
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">Du lịch</a></li>
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">Văn hóa</a></li>
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">Ẩm thực</a></li>
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">Góc nhìn</a></li>
+                </ul>
+            </div>
+            <div>
+                <h6 class="font-semibold text-gray-800 mb-3">Thông tin</h6>
+                <ul class="list-none p-0">
+                    <li class="mb-2"><a href="/about" class="hover:text-indigo-600">Về chúng tôi</a></li>
+                    <li class="mb-2"><a href="/contact" class="hover:text-indigo-600">Liên hệ</a></li>
+                    <li class="mb-2"><a href="/privacy" class="hover:text-indigo-600">Chính sách bảo mật</a></li>
+                    <li class="mb-2"><a href="/terms" class="hover:text-indigo-600">Điều khoản sử dụng</a></li>
+                    <li class="mb-2"><a href="/sitemap" class="hover:text-indigo-600">Sitemap</a></li>
+                </ul>
+            </div>
+            <div>
+                <h6 class="font-semibold text-gray-800 mb-3">Mạng xã hội</h6>
+                <ul class="list-none p-0">
+                    <li class="mb-2"><a href="www.facebook.com/kienvn2003" class="hover:text-indigo-600">Facebook</a>
+                    </li>
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">Twitter</a></li>
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">Instagram</a></li>
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">YouTube</a></li>
+                    <li class="mb-2"><a href="#" class="hover:text-indigo-600">RSS</a></li>
+                </ul>
+            </div>
+            <div>
+                <h6 class="font-semibold text-gray-800 mb-3">Liên hệ</h6>
+                <p class="mb-2">Địa chỉ: 6 Võ Thị Sáu, Phường Bến Thủy, Thành Phố Vinh</p>
+                <p class="mb-2">Email: kienvn2k3@gmail.com</p>
+                <p class="mb-2">Hotline: 0327 062 858</p>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 mt-6 border-t border-gray-200 py-4 text-center text-gray-500 text-xs">
+            &copy; 2025 BlogNews. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+
+</html>

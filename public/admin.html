@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang quản trị</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@tailwindcss/browser@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the sidebar and content (giữ nguyên) */
+        .sidebar {
+            width: 240px;
+            background-color: #f3f4f6;
+            border-right: 1px solid #e5e7eb;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: #4b5563;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+            white-space: nowrap;
+        }
+
+        .sidebar-link:hover {
+            background-color: #d1d5db;
+            color: #1f2937;
+        }
+
+        .sidebar-link.active {
+            background-color: #6b7280;
+            color: #ffffff;
+        }
+
+        .content {
+            margin-left: 240px;
+            padding: 1rem;
+            flex-grow: 1;
+            overflow-x: auto;
+        }
+
+        .top-nav {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Styles for the post list table */
+        .post-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background-color: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-table thead th {
+            padding: 0.75rem;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #4b5563;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .post-table tbody td {
+            padding: 0.75rem;
+            text-align: left;
+            color: #6b7280;
+        }
+
+        .post-table tbody tr:nth-child(odd) {
+            background-color: #f7fafc;
+        }
+
+        .post-table .actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .post-table .actions button {
+            margin-left: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+            white-space: nowrap;
+            border: none;
+            background: none;
+            color: #6b7280;
+        }
+
+        .post-table .actions button:hover {
+            color: #1f2937;
+        }
+
+        .post-table .actions .edit-button {
+            color: #f59e0b;
+        }
+
+        .post-table .actions .delete-button {
+            color: #dc2626;
+        }
+
+        .add-button {
+            background-color: #16a34a;
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .add-button:hover {
+            background-color: #15803d;
+        }
+    </style>
+</head>
+
+<body class="flex h-screen font-inter">
+    <div class="sidebar">
+        <div class="px-4">
+            <h1 class="text-xl font-semibold text-gray-800">Dashboard</h1>
+        </div>
+        <nav class="mt-6">
+            <a href="admin.html" class="sidebar-link active">Tổng quan</a>
+            <a href="#" id="posts-link" class="sidebar-link">Quản lý Bài viết</a>
+            <a href="#" id="comments-link" class="sidebar-link">Quản lý Bình luận</a>
+            <a href="/admin/users" class="sidebar-link">Người dùng</a>
+            <a href="/admin/settings" class="sidebar-link">Cài đặt</a>
+        </nav>
+    </div>
+
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <header class="top-nav">
+            <div>Chào mừng, Admin</div>
+            <div>
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" id="logout-button">
+                    Đăng xuất
+                </button>
+            </div>
+        </header>
+
+        <main class="content">
+            <div id="overview-container">
+                <h1 class="text-2xl font-semibold text-gray-800 mb-4">Tổng quan</h1>
+                <p>Đây là nơi bạn có thể quản lý nội dung của blog.</p>
+            </div>
+
+            <!-- Bài viết -->
+            <div id="post-list-container" style="display: none;">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Quản lý Bài viết</h2>
+                <button id="create-post-button"
+                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    Thêm bài viết
+                </button>
+
+                <table class="post-table" id="post-list">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tiêu đề</th>
+
+                            <th>Trạng thái</th>
+                            <th>Tác giả</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <!-- Vùng hiển thị form chỉnh sửa -->
+            <div id="editContainer"></div>
+            <!-- Kết thúc vùng hiển thị form chỉnh sửa -->
+            <!-- Thêm bài viết -->
+            <!-- Thêm bài viết -->
+            <div id="create-post-container" style="display: none;">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Thêm bài viết mới</h2>
+                <form id="create-post-form" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <label for="title" class="block text-gray-700">Tiêu đề:</label>
+                        <input type="text" id="title" name="title" required
+                            class="border border-gray-300 rounded px-3 py-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="slug" class="block text-gray-700">Slug (tuỳ chọn):</label>
+                        <input type="text" id="slug" name="slug" class="border border-gray-300 rounded px-3 py-2 w-full"
+                            placeholder="slug-tu-tao (nếu không nhập sẽ tự tạo)">
+                    </div>
+                    <div class="mb-4">
+                        <label for="content" class="block text-gray-700">Nội dung:</label>
+                        <textarea id="content" name="content" required minlength="10"
+                            class="border border-gray-300 rounded px-3 py-2 w-full"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="status" class="block text-gray-700">Trạng thái:</label>
+                        <select id="status" name="status" class="border border-gray-300 rounded px-3 py-2 w-full">
+                            <option value="draft">Nháp</option>
+                            <option value="published">Đã xuất bản</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="featuredImage" class="block text-gray-700">Hình ảnh nổi bật:</label>
+                        <input type="file" id="featuredImage" name="featuredImage"
+                            class="border border-gray-300 rounded px-3 py-2 w-full" accept="image/*">
+                        <img id="previewImage" class="mt-2 w-32 h-32 object-cover" style="display:none;" />
+                    </div>
+                    <div class="mb-4">
+                        <label for="tags" class="block text-gray-700">Tags (cách nhau bởi dấu phẩy):</label>
+                        <input type="text" id="tags" name="tags" class="border border-gray-300 rounded px-3 py-2 w-full"
+                            placeholder="du lịch,ẩm thực,văn hoá">
+                    </div>
+                    <div class="mb-4">
+                        <label for="categories" class="block text-gray-700">Danh mục (giữ Ctrl để chọn nhiều):</label>
+                        <select id="categories" name="categories" multiple
+                            class="border border-gray-300 rounded px-3 py-2 w-full">
+                            <option value="du lịch">Du lịch</option>
+                            <option value="ẩm thực">Ẩm thực</option>
+                            <option value="sự kiện">Sự kiện</option>
+                            <option value="lễ hội">Lễ hội</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Lưu bài viết
+                    </button>
+                </form>
+            </div>
+            <!-- Kết thúc Thêm bài viết -->
+            <!-- Quản lý bình luận -->
+            <div id="comment-management-section" style="display: none;">
+                <h2 class="text-2xl font-bold mb-4">Quản lý Bình luận</h2>
+                <div id="comments-container">
+                    <table class="post-table" id="post-list">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Bài viết</th>
+                                <th>Người dùng</th>
+                                <th>Nội dung</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Kết thúc Quản lý bình luận -->
+            <!-- Vùng hiển thị form chỉnh sửa bình luận -->
+            <div id="editContainer"></div>
+            <!-- Kết thúc vùng hiển thị form chỉnh sửa bình luận -->
+           
+
+
+    </div>
+
+    </main>
+
+    </div>
+
+
+    <!-- SCRIPT -->
+    <script>
+        // ====== ELEMENT REFERENCES ======
+        const postsLink = document.getElementById('posts-link');
+        const postListContainer = document.getElementById('post-list-container');
+        const overviewContainer = document.getElementById('overview-container'); // Giả định có container này
+        const postListTable = document.getElementById('post-list'); // Bảng hiển thị danh sách bài viết
+        const createPostButton = document.getElementById('create-post-button'); // Nút "Thêm bài viết"
+        const createPostContainer = document.getElementById('create-post-container'); // Container form thêm bài viết
+        const createPostForm = document.getElementById('create-post-form'); // Form thêm bài viết
+        const logoutButton = document.getElementById('logout-button'); // Nút đăng xuất
+
+        const commentsLink = document.getElementById('comments-link');
+        const commentSection = document.getElementById('comment-management-section'); // div chứa quản lý bình luận
+        const postSection = document.getElementById('post-management-section'); // nếu có
+
+
+
+        // ====== SIDEBAR ACTIVE HIGHLIGHTING ======
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Ngăn chặn hành vi mặc định của thẻ <a> nếu cần
+                // e.preventDefault();
+
+                sidebarLinks.forEach(l => l.classList.remove('active')); // Xóa 'active' khỏi tất cả
+                link.classList.add('active'); // Gán 'active' cho phần tử được click
+            });
+        });
+
+        // ====== NAVIGATION & DATA LOADING ======
+
+        // Xử lý khi click vào link "Bài viết" trên sidebar
+        if (postsLink) { // Kiểm tra phần tử tồn tại
+            postsLink.addEventListener('click', (event) => {
+                event.preventDefault(); // Ngăn chặn tải lại trang
+
+                // Hiển thị phần quản lý bài viết và ẩn các phần khác
+                if (postListContainer) postListContainer.style.display = 'block';
+                if (overviewContainer) overviewContainer.style.display = 'none'; // Ẩn phần tổng quan
+
+                // TODO: Ẩn các container khác của admin panel nếu có (ví dụ: quản lý bình luận, người dùng...)
+
+                // Tải danh sách bài viết
+                fetchPosts();
+            });
+        }
+
+
+        // Hàm tải danh sách bài viết từ API
+        async function fetchPosts() {
+            try {
+                // TODO: Nếu đây là admin panel và bạn muốn hiển thị TẤT CẢ bài viết (bao gồm nháp),
+                // bạn cần một route backend mới như GET /api/admin/posts
+                // Hiện tại, route GET /api/posts chỉ trả về bài viết đã 'published'.
+                const response = await fetch('/api/posts', { // Sửa endpoint từ /admin/posts thành /api/posts
+                    headers: {
+                        // Thêm header Authorization nếu route /api/posts yêu cầu xác thực
+                        // 'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                });
+
+                if (!response.ok) {
+                    // Xử lý lỗi HTTP (ví dụ: 401 Unauthorized, 403 Forbidden)
+                    if (response.status === 401 || response.status === 403) {
+                        alert('Bạn không có quyền truy cập danh sách bài viết.');
+                        // TODO: Chuyển hướng về trang đăng nhập nếu là 401
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const posts = await response.json();
+                const tbody = postListTable ? postListTable.querySelector('tbody') : null;
+
+                if (tbody) {
+                    tbody.innerHTML = ''; // Xóa nội dung cũ của bảng
+
+                    // Hiển thị dữ liệu bài viết vào bảng
+                    posts.forEach((post, index) => {
+                        const row = document.createElement('tr');
+
+                        // Chú ý: post.authorId là một đối tượng nếu populate thành công
+                        const authorUsername = post.authorId ? post.authorId.username : 'Không rõ tác giả';
+                        // TODO: Nếu categories và tags được populate, bạn có thể hiển thị tên của chúng
+                        // const categoryNames = post.categories ? post.categories.map(cat => cat.name).join(', ') : '';
+                        // const tagNames = post.tags ? post.tags.map(tag => tag.name).join(', ') : '';
+
+
+                        row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${post.title || 'Không có tiêu đề'}</td>
+                    <td>${post.status || 'Không có trạng thái'}</td>
+                    <td>${authorUsername}</td>
+                    <td class="actions">
+                        <button class="edit-button" onclick="editPost('${post._id}')" title="Sửa bài viết">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete-button" onclick="deletePost('${post._id}')" title="Xóa bài viết">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                `;
+                        tbody.appendChild(row);
+                    });
+                } else {
+                    console.error("Element with id 'post-list' or its tbody not found.");
+                }
+
+
+            } catch (error) {
+                console.error('Lỗi khi tải bài viết:', error);
+                // Hiển thị thông báo lỗi thân thiện hơn cho người dùng
+                alert('Không thể tải bài viết. Vui lòng thử lại sau.');
+            }
+        }
+
+        // ====== POST ACTIONS ======
+
+        // Hàm xử lý khi click nút Sửa
+        function editPost(postId) {
+            const token = localStorage.getItem('token');
+
+            fetch(`/api/posts/${postId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error('Không thể tải bài viết');
+                    return response.json();
+                })
+                .then(post => {
+                    const formHtml = `
+            <div class="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-md mt-6 border border-gray-200">
+                <h3 class="text-xl font-semibold mb-4 text-green-700">Chỉnh sửa bài viết</h3>
+                <form id="editPostForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Tiêu đề</label>
+                        <input type="text" name="title" value="${post.title}" required
+                            class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Nội dung</label>
+                        <textarea name="content" rows="5" required
+                            class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2">${post.content}</textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Tags (ngăn cách bằng dấu phẩy)</label>
+                        <input type="text" name="tags" value="${post.tags?.join(', ') || ''}"
+                            class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Trạng thái</label>
+                        <select name="status" required
+                            class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2">
+                            <option value="draft" ${post.status === 'draft' ? 'selected' : ''}>Nháp</option>
+                            <option value="published" ${post.status === 'published' ? 'selected' : ''}>Đã xuất bản</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Ảnh nổi bật (URL)</label>
+                        <input type="text" name="featuredImage" value="${post.featuredImage || ''}"
+                            class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2">
+                    </div>
+
+                    <div class="flex justify-end space-x-3 pt-2">
+                        <button type="submit"
+                            class="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg">
+                            Cập nhật
+                        </button>
+                        <button type="button" onclick="cancelEdit()"
+                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium px-4 py-2 rounded-lg">
+                            Hủy
+                        </button>
+                    </div>
+                </form>
+            </div>
+        `;
+
+                    const editContainer = document.getElementById('editContainer');
+                    editContainer.innerHTML = formHtml;
+
+                    const form = document.getElementById('editPostForm');
+                    form.addEventListener('submit', function (e) {
+                        e.preventDefault();
+
+                        const formData = new FormData(form);
+                        const updatedPost = {
+                            title: formData.get('title'),
+                            content: formData.get('content'),
+                            tags: formData.get('tags').split(',').map(tag => tag.trim()),
+                            status: formData.get('status'),
+                            featuredImage: formData.get('featuredImage')
+                        };
+
+                        fetch(`/api/posts/${postId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify(updatedPost)
+                        })
+                            .then(response => {
+                                if (!response.ok) throw new Error('Cập nhật thất bại');
+                                return response.json();
+                            })
+                            .then(() => {
+                                alert('✅ Cập nhật thành công');
+                                editContainer.innerHTML = '';
+                                fetchPosts();
+                            })
+                            .catch(err => {
+                                console.error(err);
+                                alert('❌ Lỗi khi cập nhật bài viết: ' + err.message);
+                            });
+                    });
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Không thể lấy thông tin bài viết.');
+                });
+        }
+
+
+        // Hàm xử lý khi click nút Xóa
+        function deletePost(postId) {
+            if (confirm('Bạn có chắc chắn muốn xóa bài viết này không?')) {
+                const token = localStorage.getItem('token');
+
+                fetch(`/api/posts/${postId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(data => {
+                                throw new Error(data.message || 'Xóa thất bại');
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(() => {
+                        alert('Xóa thành công');
+                        fetchPosts(); // Hàm này cần được định nghĩa để tải lại danh sách bài viết
+                    })
+                    .catch(err => {
+                        console.error('Lỗi xóa bài viết:', err);
+                        alert('Không thể xóa bài viết: ' + err.message);
+                    });
+            }
+        }
+
+
+        // ====== CREATE POST FORM HANDLING ======
+
+        // Xử lý khi click nút "Thêm bài viết"
+        if (createPostButton) { // Kiểm tra phần tử tồn tại
+            createPostButton.addEventListener('click', () => {
+                // Hiển thị form thêm bài viết và ẩn danh sách bài viết
+                if (postListContainer) postListContainer.style.display = 'none';
+                if (createPostContainer) createPostContainer.style.display = 'block';
+                // TODO: Ẩn các container khác
+
+                // TODO: Tải danh sách Categories và Tags để điền vào các dropdown/checkbox trong form
+                // fetchCategories();
+                // fetchTags();
+            });
+        }
+
+
+        // Xử lý khi submit form thêm bài viết
+        // Xem trước hình ảnh
+        document.getElementById('featuredImage').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const img = document.getElementById('previewImage');
+                img.src = URL.createObjectURL(file);
+                img.style.display = 'block';
+            }
+        });
+
+        if (createPostForm) {
+            createPostForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    alert('Bạn cần đăng nhập!');
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                const form = e.target;
+                const formData = new FormData();
+
+                formData.append('title', form.title.value);
+                formData.append('slug', form.slug.value.trim());
+                formData.append('content', form.content.value);
+                formData.append('status', form.status.value);
+
+                if (form.featuredImage.files[0]) {
+                    formData.append('featuredImage', form.featuredImage.files[0]);
+                }
+
+                const tagsArray = form.tags.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+                tagsArray.forEach(tag => formData.append('tags', tag)); // Không cần tags[]
+
+                const selectedCategories = Array.from(form.categories.selectedOptions).map(opt => opt.value);
+                selectedCategories.forEach(cat => formData.append('categories', cat)); // Không cần categories[]
+
+                try {
+                    const res = await fetch('/admin/posts', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer ' + token
+                        },
+                        body: formData
+                    });
+
+                    if (res.ok) {
+                        const post = await res.json();
+                        alert('Đã thêm bài viết thành công!');
+                        if (typeof fetchPosts === 'function') fetchPosts(); // Nếu có hàm fetch bài viết
+                        if (postListContainer) postListContainer.style.display = 'block';
+                        if (createPostContainer) createPostContainer.style.display = 'none';
+                    } else {
+                        const error = await res.json();
+                        alert('Lỗi: ' + (error.message || error.error || 'Không thể thêm bài viết'));
+                    }
+                } catch (err) {
+                    console.error('Lỗi mạng hoặc khác:', err);
+                    alert('Có lỗi xảy ra khi gửi yêu cầu!');
+                }
+            });
+        }
+
+
+        // ====== COMMENTS LINK HANDLER ======
+        if (commentsLink) {
+            commentsLink.addEventListener('click', (event) => {
+                event.preventDefault(); // Ngăn chặn tải lại trang
+
+                // Hiển thị phần quản lý bình luận và ẩn các phần khác
+                if (commentSection) commentSection.style.display = 'block';
+                if (postListContainer) postListContainer.style.display = 'none'; // Ẩn phần quản lý bài viết
+                if (overviewContainer) overviewContainer.style.display = 'none'; // Ẩn phần tổng quan
+
+            });
+        };
+
+        // ====== COMMENTS FETCHING AND MANAGEMENT ======
+        async function fetchComments() {
+            try {
+                const response = await fetch('/api/comments');
+                if (!response.ok) throw new Error('Không thể tải bình luận');
+
+                const comments = await response.json();
+                const tbody = document.querySelector('#comment-management-section tbody');
+
+                if (tbody) {
+                    tbody.innerHTML = ''; // Xóa nội dung cũ của bảng
+
+                    comments.forEach((comment, index) => {
+                        const postTitle = comment.postId && comment.postId.title ? comment.postId.title : 'Không rõ bài viết';
+                        const userName = comment.userId && comment.userId.username ? comment.userId.username : 'Không rõ người dùng';
+
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                  <td>${index + 1}</td>
+                  <td>${postTitle}</td>
+                  <td>${userName}</td>
+                  <td>${comment.content || 'Không có nội dung'}</td>
+                  <td>${comment.status || 'Chưa xác định'}</td>
+                  <td class="actions">
+                    <button class="edit-button" onclick="editComment('${comment._id}')" title="Sửa bình luận">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="delete-button" onclick="deleteComment('${comment._id}')" title="Xóa bình luận">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </td>
+                `;
+                        tbody.appendChild(row);
+                    });
+                } else {
+                    console.error("Element with id 'comment-management-section' or its tbody not found.");
+                }
+            } catch (error) {
+                console.error('Lỗi khi tải bình luận:', error);
+                alert('Không thể tải bình luận. Vui lòng thử lại sau.');
+            }
+        }
+        // Gọi hàm fetchComments khi trang được tải
+        if (commentSection) {
+            fetchComments(); // Gọi hàm này để tải bình luận khi phần quản lý bình luận được hiển thị
+        }
+
+
+             // Hàm xử lý khi click nút Sửa bình luận
+                function editComment(commentId) {
+                    const token = localStorage.getItem('token'); // Lấy token từ localStorage
+
+                    if (!token) {
+                        alert('Bạn cần đăng nhập để thực hiện thao tác này.');
+                        window.location.href = '/login.html';
+                        return;
+                    }
+
+                    // Gửi yêu cầu lấy thông tin bình luận
+                    fetch(`/api/comments/${commentId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                if (response.status === 404) {
+                                    throw new Error('Bình luận không tồn tại.');
+                                } else if (response.status === 401 || response.status === 403) {
+                                    throw new Error('Bạn không có quyền chỉnh sửa bình luận này.');
+                                } else {
+                                    throw new Error('Không thể tải thông tin bình luận.');
+                                }
+                            }
+                            return response.json();
+                        })
+                        .then(comment => {
+                            // Hiển thị form chỉnh sửa bình luận
+                            const editContainer = document.getElementById('editContainer');
+                            if (!editContainer) {
+                                console.error("Không tìm thấy phần tử 'editContainer' trong DOM.");
+                                return;
+                            }
+
+                            editContainer.innerHTML = `
+                                                        <div class="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-md mt-6 border border-gray-200">
+                                                            <h3 class="text-xl font-semibold mb-4 text-green-700">Chỉnh sửa bình luận</h3>
+                                                            <form id="editCommentForm" class="space-y-4">
+                                                                <div>
+                                                                    <label class="block text-sm font-medium text-gray-700">Nội dung</label>
+                                                                    <textarea name="content" rows="5" required
+                                                                        class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2">${comment.content}</textarea>
+                                                                </div>
+                                                                <div>
+                                                                    <label class="block text-sm font-medium text-gray-700">Trạng thái</label>
+                                                                    <select name="status" required
+                                                                        class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2">
+                                                                        <option value="pending" ${comment.status === 'pending' ? 'selected' : ''}>Chờ duyệt</option>
+                                                                        <option value="approved" ${comment.status === 'approved' ? 'selected' : ''}>Đã duyệt</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="flex justify-end space-x-3 pt-2">
+                                                                    <button type="submit"
+                                                                        class="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg">
+                                                                        Cập nhật
+                                                                    </button>
+                                                                    <button type="button" onclick="cancelEdit()"
+                                                                        class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium px-4 py-2 rounded-lg">
+                                                                        Hủy
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    `;
+
+                            // Xử lý khi submit form chỉnh sửa
+                            const form = document.getElementById('editCommentForm');
+                            if (!form) {
+                                console.error("Không tìm thấy form 'editCommentForm' trong DOM.");
+                                return;
+                            }
+
+                            form.addEventListener('submit', function (e) {
+                                e.preventDefault();
+
+                                const formData = new FormData(form);
+                                const updatedComment = {
+                                    content: formData.get('content'),
+                                    status: formData.get('status')
+                                };
+
+                                // Gửi yêu cầu cập nhật bình luận
+                                fetch(`/api/comments/${commentId}`, {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': `Bearer ${token}`
+                                    },
+                                    body: JSON.stringify(updatedComment)
+                                })
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            if (response.status === 400) {
+                                                throw new Error('Dữ liệu không hợp lệ.');
+                                            } else if (response.status === 401 || response.status === 403) {
+                                                throw new Error('Bạn không có quyền cập nhật bình luận này.');
+                                            } else {
+                                                throw new Error('Cập nhật thất bại.');
+                                            }
+                                        }
+                                        return response.json();
+                                    })
+                                    .then(() => {
+                                        alert('✅ Cập nhật bình luận thành công');
+                                        editContainer.innerHTML = ''; // Xóa form chỉnh sửa
+                                        fetchComments(); // Tải lại danh sách bình luận
+                                    })
+                                    .catch(err => {
+                                        console.error('Lỗi khi cập nhật bình luận:', err);
+                                        alert('❌ Lỗi khi cập nhật bình luận: ' + err.message);
+                                    });
+                            });
+                        })
+                        .catch(err => {
+                            console.error('Lỗi khi lấy thông tin bình luận:', err);
+                            alert('❌ ' + err.message);
+                        });
+                }
+
+                // Hàm hủy chỉnh sửa
+                function cancelEdit() {
+                    const editContainer = document.getElementById('editContainer');
+                    if (editContainer) {
+                        editContainer.innerHTML = ''; // Xóa form chỉnh sửa
+                    }
+                }
+
+
+
+
+        //====== Đăng xuất ======//
+        if (logoutButton) {
+            logoutButton.addEventListener('click', () => {
+                localStorage.removeItem('token'); // Xoá token khỏi localStorage
+                alert('Đăng xuất thành công!');
+                // Chuyển hướng về trang đăng nhập
+                window.location.href = '/login.html'; // Chuyển hướng về trang đăng nhập
+            });
+        }
+
+
+    </script>
+</body>
+
+</html>

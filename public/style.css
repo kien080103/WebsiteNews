@@ -1,0 +1,366 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #e7e2ba;
+  color: #131313;
+}
+
+header:first-of-type {
+    position: sticky;
+    top: 0;
+    z-index: 101;
+     background: #4e52d5;
+    
+}
+header:nth-of-type(2) {
+    position: sticky;
+    top: 50px; /* hoặc đúng chiều cao header trên */
+    z-index: 100;
+     background: #686cd8;
+   
+}
+header {
+  background: #4e52d5;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+
+
+.login-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.social-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+.social-icon:hover {
+  background-color: #e0e0e0;
+}
+.social-icon img {
+  width: 18px;
+  height: 18px;
+}
+
+.login-button {
+  padding: 6px 16px;
+  background-color: #1877f2; /* Màu xanh Facebook */
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+.login-button:hover {
+  background-color: #145dbf;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2b2b2b;
+}
+
+.search {
+  flex: 1;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #333;
+  outline: none;
+}
+
+nav a {
+  color: #333;
+  text-decoration: none;
+  margin-left: 12px;
+}
+
+.container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.sidebar-left,
+.sidebar-right {
+  width: 200px;
+  height: max-content;
+  background: #d9dfe2;
+  padding: 16px;
+  border-radius: 8px;
+  color: #333;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+.sidebar-left h3,
+.sidebar-right h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: #222;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 6px;
+}
+
+.sidebar-left ul,
+.sidebar-right ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-left li,
+.sidebar-right li {
+  margin: 10px 0;
+}
+
+.sidebar-left a,
+.sidebar-right a {
+  text-decoration: none;
+  color: #007acc;
+  transition: 0.2s;
+  display: inline-block;
+}
+
+.sidebar-left a:hover,
+.sidebar-right a:hover {
+  color: #005fa3;
+  padding-left: 5px;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* Cập nhật: Top Stories mỗi tin 1 dòng */
+.post-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.post-card {
+  display: flex;
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+  align-items: center;
+}
+
+.post-card:hover {
+  transform: translateY(-2px);
+}
+
+.post-card img {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.post-info {
+  flex: 1;
+  margin-left: 16px;
+}
+
+.post-info h4 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  color: #222;
+}
+
+.post-info p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.post-item {
+  display: flex;
+  gap: 10px;
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.post-item img {
+  width: 130px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.nav-link {
+  margin-left: 15px;
+  color: #333;
+  text-decoration: none;
+}
+
+.post-card,
+.post-item {
+  display: flex;
+  gap: 10px;
+  text-decoration: none;
+  color: #222;
+}
+
+.post-card img,
+.post-item img {
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+header {
+  background-color: #585cd6;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header nav {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
+}
+
+header nav a {
+  color: #333;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 12px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 6px;
+}
+
+header nav a:hover {
+  background-color: #e0e0e0;
+  color: #007acc;
+}
+
+.mySwiper {
+  width: 100%;
+  max-width: 800px;
+  height: 300px;
+  margin: 30px auto;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Màu nền footer */
+footer {
+    background-color: #f9f9f9; /* Màu xám nhạt hơn nữa */
+    padding-top: 30px;
+    padding-bottom: 20px;
+    border-top: 1px solid #eee; /* Thêm đường kẻ trên footer */
+}
+
+/* Container footer */
+footer .container {
+    max-width: 1200px; /* Điều chỉnh độ rộng container nếu cần */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Grid bố cục các cột */
+footer .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Các cột tự động điều chỉnh kích thước */
+    gap: 20px; /* Khoảng cách giữa các cột */
+}
+
+/* Tiêu đề cột */
+footer h6 {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333; /* Màu tiêu đề đậm hơn */
+    margin-bottom: 15px;
+    position: relative;
+    padding-bottom: 5px;
+}
+
+/* Tạo đường kẻ ngang dưới tiêu đề */
+footer h6::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 2px;
+    background-color: #007bff; /* Màu xanh dương làm điểm nhấn */
+}
+
+/* Danh sách liên kết */
+footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+footer ul li {
+    margin-bottom: 8px;
+}
+
+footer ul li a {
+    color: #555;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer ul li a:hover {
+    color: #007bff; /* Hiệu ứng hover màu xanh dương */
+}
+
+/* Thông tin liên hệ */
+footer h6:nth-child(4) + div p { /* Chọn các thẻ p sau tiêu đề "Liên hệ" */
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+/* Phần bản quyền */
+footer .border-t {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    color: #777;
+    font-size: 0.9em;
+}

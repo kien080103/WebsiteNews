@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập & Đăng ký</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 font-inter min-h-screen flex flex-col p-6">
+
+  <!-- Header -->
+  <header class="bg-white shadow-md py-2 flex items-center px-6 mb-6">
+    <div class="logo text-xl font-bold text-gray-800">
+      <a href="/" style="text-decoration:none;color:inherit">🌐 BlogNews</a>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="flex-grow flex items-center justify-center">
+    <div
+      class="bg-white rounded-2xl shadow-lg overflow-hidden w-full max-w-6xl grid grid-cols-1 md:grid-cols-2">
+
+      <!-- Đăng nhập -->
+      <section class="p-10">
+        <div class="text-center">
+          <img class="mx-auto h-12 w-auto" src="image/dangnhap-icon.png" alt="Logo" />
+          <h2 class="mt-4 text-2xl font-bold text-indigo-700">Đăng nhập</h2>
+          <p class="text-sm text-gray-500">Chào mừng bạn quay lại!</p>
+        </div>
+        <form id="login-form" class="mt-6 space-y-4" novalidate>
+          <div>
+            <label for="username" class="block text-sm font-medium text-gray-700">Tên đăng nhập</label>
+            <input id="username" name="username" type="text" required
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+          </div>
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-700">Mật khẩu</label>
+            <input id="password" name="password" type="password" required
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+          </div>
+          <div>
+            <button type="submit"
+              class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 transition duration-200">
+              Đăng nhập
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Đăng ký -->
+      <section class="bg-indigo-50 p-10">
+        <div class="text-center">
+          <h2 class="text-2xl font-bold text-indigo-800">Tạo tài khoản mới</h2>
+          <p class="text-sm text-gray-600">Hãy điền thông tin bên dưới để đăng ký</p>
+        </div>
+        <form id="register-form" class="mt-6 space-y-4" novalidate>
+          <div>
+            <label for="reg-username" class="block text-sm font-medium text-gray-700">Tên đăng nhập</label>
+            <input id="reg-username" name="username" type="text" required
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-400 focus:outline-none" />
+          </div>
+          <div>
+            <label for="reg-email" class="block text-sm font-medium text-gray-700">Email</label>
+            <input id="reg-email" name="email" type="email" required
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-400 focus:outline-none" />
+          </div>
+          <div>
+            <label for="reg-fullname" class="block text-sm font-medium text-gray-700">Họ và tên</label>
+            <input id="reg-fullname" name="fullName" type="text" required
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-400 focus:outline-none" />
+          </div>
+          <div>
+            <label for="reg-password" class="block text-sm font-medium text-gray-700">Mật khẩu</label>
+            <input id="reg-password" name="password" type="password" required
+              class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-400 focus:outline-none" />
+          </div>
+          <div>
+            <button type="submit"
+              class="w-full py-2 px-4 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 transition duration-200">
+              Đăng ký
+            </button>
+          </div>
+        </form>
+      </section>
+
+    </div>
+  </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginForm = document.getElementById('login-form');
+            if (loginForm) {
+                loginForm.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    const username = loginForm.username.value.trim();
+                    const password = loginForm.password.value.trim();
+
+                    try {
+                        const res = await fetch('/api/auth/login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ username, password })
+                        });
+                        const data = await res.json();
+                        if (res.ok && data.token) {
+                            localStorage.setItem('token', data.token);
+                            // alert('Đăng nhập thành công!');
+                            window.location.href = '/admin.html';
+                            //chuyển hướng đến trang chủ sau khi đăng nhập thành công
+                          //chuyển về trang author khi tài khoản là author
+                            // if (data.role === 'author') {
+                            //     window.location.href = '/index.html';
+                            // } else {
+                            //     window.location.href = '/admin.html';
+                            // }
+
+                        } else {
+                            alert(data.message || data.error || 'Đăng nhập thất bại!');
+                        }
+                    } catch (err) {
+                        alert('Lỗi kết nối máy chủ!');
+                    }
+                });
+            }
+
+            const registerForm = document.getElementById('register-form');
+            if (registerForm) {
+                registerForm.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    const username = registerForm.username.value.trim();
+                    const email = registerForm.email.value.trim();
+                    const fullName = registerForm.fullName.value.trim();
+                    const password = registerForm.password.value.trim();
+
+                    try {
+                        const res = await fetch('/api/auth/register', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ username, email, fullName, password })
+                        });
+                        const data = await res.json();
+                        if (res.ok) {
+                            alert('Đăng ký thành công! Bạn có thể đăng nhập.');
+                            registerForm.reset();
+                        } else {
+                            alert(data.message || data.error || 'Đăng ký thất bại!');
+                        }
+                    } catch (err) {
+                        alert('Lỗi kết nối máy chủ!');
+                    }
+                });
+            }
+        });
+       
+        // về trang chủ//
+        window.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                window.location.href = '/index.html';
+            }
+        });
+    </script>
+</body>
+</html>
